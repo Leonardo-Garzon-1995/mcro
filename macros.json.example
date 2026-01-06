@@ -1,0 +1,74 @@
+[
+    {
+        "key": "a",
+        "command": "chrome",
+        "label": "open chrome in web browser",
+        "action": {
+            "type": "open_url",
+            "url": "https://www.google.com"
+        }
+    },
+    {
+        "key": "c",
+        "command": "gpt",
+        "label": "open chatgpt app",
+        "action": {
+            "type": "open_app",
+            "path": "C:\\Users\\username\\AppData\\Local\\Microsoft\\WindowsApps\\chatgpt.exe"
+        }
+    },
+    {
+        "key": "d",
+        "command": "discord",
+        "label": "open discord in web browser",
+        "action": {
+            "type": "open_url",
+            "url": "https://discord.com"
+        }
+    },
+    {
+        "key": "e",
+        "command": "claude",
+        "label": "open claude app",
+        "action": {
+            "type": "open_app",
+            "path": "C:/Users/username/AppData/Local/AnthropicClaude/app-1.0.2339/claude.exe"
+        }
+    },
+    {
+        "key": "g",
+        "command": "github",
+        "label": "open github in web browser",
+        "action": {
+            "type": "open_url",
+            "url": "https://github.com"
+        }
+    },
+    {
+        "key": "n",
+        "command": "nv",
+        "label": "node version",
+        "action": {
+            "type": "run_cmd",
+            "cmd": "node -v"
+        }
+    },
+    {
+        "key": "s",
+        "command": "spot",
+        "label": "open spotify app",
+        "action": {
+            "type": "open_app",
+            "path": "C:/Users/username/AppData/Roaming/Spotify/Spotify.exe"
+        }
+    },
+    {
+        "key": "v",
+        "command": "vscode",
+        "label": "open vscode app",
+        "action": {
+            "type": "open_app",
+            "path": "C:/Users/username/AppData/Local/Programs/Microsoft VS Code/Code.exe"
+        }
+    }
+]
