@@ -9,8 +9,8 @@ import { displayHelp, colors } from '../lib/helpers.js';
 
 const [, , command] = process.argv;
 
-const _filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(_filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const macrosPath = path.join(__dirname, "..", 'macros.json');
 
@@ -33,14 +33,14 @@ function hotReloadMacros() {
 const macrosByKey = Object.fromEntries(rawMacros.map(obj => [obj.key, obj]))
 const macrosByCommand = Object.fromEntries(rawMacros.map(obj => [obj.command, obj]))
 
-function isValidArg(arg) {
-    return Object.keys(macrosByCommand).includes(arg) || Object.keys(macrosByKey).includes(arg);
-}
-
 // ===========================================================================
 
 function executeMacrosProgram(arg) {
-
+    if (!arg) {
+        console.log("🎛  Please add a valid argument.");
+        displayHelp();
+        return
+    }
 
     if (arg === "keys") {
         rawMacros.forEach(obj => console.log(`${colors.cyan}${obj.key}${colors.reset}: ${obj.label}`));
@@ -49,14 +49,6 @@ function executeMacrosProgram(arg) {
     if (arg === "myCommands") {
         rawMacros.forEach(obj => console.log(`${colors.cyan}${obj.command}${colors.reset}: ${obj.label}`));
     }
-
-    if (!arg) {
-        console.log("🎛  Please add a valid argument.");
-        displayHelp();
-        return
-    }
-
-    
 
     if (arg === "interactive" || arg === "keyboard") {
         runKeyboardMode(macrosByKey);
