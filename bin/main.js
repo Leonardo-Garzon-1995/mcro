@@ -35,28 +35,13 @@ try {
     process.exit(1);
 }
 
-// Hot-reload macros when you edit macros.json
-function hotReloadMacros() {
-    fs.watchFile(macrosPath, () => {
-        try {
-            rawMacros = JSON.parse(fs.readFileSync(macrosPath, "utf8"));
-            console.log("↻ Reloaded macros.json");
-            
-        } catch (error) {
-            console.error("⚠️ macros.json invalid:", error.message);
-        }
-    }); 
-    process.exit(0);
-}
-
-
 const macrosByKey = Object.fromEntries(rawMacros.map(obj => [obj.key, obj]))
 const macrosByCommand = Object.fromEntries(rawMacros.map(obj => [obj.command, obj]))
 
 // ===========================================================================
 
 function executeMacrosProgram(arg) {
-    
+
     if (!arg) {
         console.log("🎛  Please add a valid argument.");
         displayHelp();
