@@ -20,20 +20,23 @@ if (!fs.existsSync(macrosPath)) {
     process.exit(1);
 }
 
-let rawMacros;
+let rawMacros = loadMacros(macrosPath);
 
-try {
-    rawMacros = JSON.parse(fs.readFileSync(macrosPath, "utf8"));
-} catch (error) {
-    if (error.code === 'ENOENT') {
-        console.log(`${colors.red}macros.json not found${colors.reset}`);
-        console.log(`You should copy ${colors.bgGray}macros.json.example${colors.reset} to macros.json`);
+function loadMacros(path) {
+    try {
+    return JSON.parse(fs.readFileSync(path, "utf8"));
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log(`${colors.red}macros.json not found${colors.reset}`);
+            console.log(`You should copy ${colors.bgGray}macros.json.example${colors.reset} to macros.json`);
+        }
+        if (error instanceof SyntaxError) {
+            console.log(`${colors.red}macros.json invalid:${colors.reset}`, error.message);
+        }
+        process.exit(1);
     }
-    if (error instanceof SyntaxError) {
-        console.log(`${colors.red}macros.json invalid:${colors.reset}`, error.message);
-    }
-    process.exit(1);
 }
+
 
 const macrosByKey = Object.fromEntries(rawMacros.map(obj => [obj.key, obj]))
 const macrosByCommand = Object.fromEntries(rawMacros.map(obj => [obj.command, obj]))
