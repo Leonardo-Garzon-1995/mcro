@@ -14,8 +14,26 @@ const __dirname = path.dirname(__filename);
 
 const macrosPath = path.join(__dirname, "..", 'macros.json');
 
-let rawMacros = JSON.parse(fs.readFileSync(macrosPath, 'utf-8'));
+if (!fs.existsSync(macrosPath)) {
+    console.log(`${colors.red}macros.json not found${colors.reset}`);
+    console.log(`You should copy ${colors.bgGray}macros.json.example${colors.reset} to macros.json`);
+    process.exit(1);
+}
 
+let rawMacros;
+
+try {
+    rawMacros = JSON.parse(fs.readFileSync(macrosPath, "utf8"));
+} catch (error) {
+    if (error.code === 'ENOENT') {
+        console.log(`${colors.red}macros.json not found${colors.reset}`);
+        console.log(`You should copy ${colors.bgGray}macros.json.example${colors.reset} to macros.json`);
+    }
+    if (error instanceof SyntaxError) {
+        console.log(`${colors.red}macros.json invalid:${colors.reset}`, error.message);
+    }
+    process.exit(1);
+}
 
 // Hot-reload macros when you edit macros.json
 function hotReloadMacros() {
