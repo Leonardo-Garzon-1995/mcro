@@ -28,11 +28,13 @@ function executeMacrosProgram(arg) {
     }
 
     if (arg === "keys") {
-        rawMacros.forEach(obj => console.log(`${colors.cyan}${obj.key}${colors.reset}: ${obj.label}`));
+        console.log(`\n${colors.green}Available keys:${colors.reset}`);
+        rawMacros.forEach(obj => console.log(`  ${colors.cyan}${obj.key}${colors.reset}: ${obj.label}`));
     }
 
     if (arg === "myCommands") {
-        rawMacros.forEach(obj => console.log(`${colors.cyan}${obj.command}${colors.reset}: ${obj.label}`));
+        console.log(`\n${colors.green}Available commands:${colors.reset}`);
+        rawMacros.forEach(obj => console.log(`  ${colors.cyan}${obj.command}${colors.reset}: ${obj.label}`));
     }
 
     if (arg === "interactive" || arg === "keyboard") {
