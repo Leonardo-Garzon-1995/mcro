@@ -4,9 +4,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { runKeyboardMode } from '../lib/interactive.js'; 
 import { runTerminalMode } from '../lib/terminal_mode.js';
+import { configOptions } from '../lib/config.js';
 import { displayHelp, colors, loadMacros } from '../lib/helpers.js';
 
-const [, , command] = process.argv;
+const [, , command, ...args] = process.argv;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,14 +23,18 @@ const macrosByCommand = Object.fromEntries(rawMacros.map(obj => [obj.command, ob
 function executeMacrosProgram(arg) {
 
     if (!arg) {
-        console.log("🎛  Please add a valid argument.");
+        console.log("Please add a valid argument.");
         displayHelp();
-        return
+    }
+
+    if (arg === "config") {
+        configOptions(args[0], macrosPath);
     }
 
     if (arg === "keys") {
         console.log(`\n${colors.green}Available keys:${colors.reset}`);
         rawMacros.forEach(obj => console.log(`  ${colors.cyan}${obj.key}${colors.reset}: ${obj.label}`));
+        
     }
 
     if (arg === "myCommands") {
@@ -40,12 +45,12 @@ function executeMacrosProgram(arg) {
     if (arg === "interactive" || arg === "keyboard") {
         runKeyboardMode(macrosByKey);
     } else {
-        if (arg === "keys" || arg === "myCommands") return;
+        if (arg === "keys" || arg === "myCommands" || arg === "config") return;
         runTerminalMode(macrosByCommand, arg);
+        
     }
 }
 
 executeMacrosProgram(command);
-// hotReloadMacros();
 
 
