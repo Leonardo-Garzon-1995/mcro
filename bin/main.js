@@ -9,7 +9,7 @@ import { displayHelp, colors, loadMacros } from '../lib/helpers.js';
 
 const [, , command, ...args] = process.argv;
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
 const macrosPath = path.join(__dirname, "..", 'macros.json');
@@ -39,7 +39,7 @@ function executeMacrosProgram(arg) {
 
     if (arg === "myCommands") {
         console.log(`\n${colors.green}Available commands:${colors.reset}`);
-        rawMacros.forEach(obj => console.log(`  ${colors.cyan}${obj.command}${colors.reset}: ${obj.label}`));
+        rawMacros.forEach(obj => console.log(`  ${colors.cyan}${obj.command}${colors.reset}: `.padEnd(22, ' ') + `${obj.label}`));
     }
 
     if (arg === "interactive" || arg === "keyboard") {
