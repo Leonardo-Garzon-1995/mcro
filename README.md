@@ -17,7 +17,7 @@ A customizable command-line tool for creating keyboard shortcuts and terminal co
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/Leonardo-Garzon-1995/mcro.git
 cd macropad-cli
 ```
 
@@ -28,16 +28,28 @@ cp macros.json.example macros.json
 
 4. Edit `macros.json` to add your own macros
 
+or use the `mcro config` command to set them up interactively.
+
 ## Usage
 
 ### Command Structure
 
 ```bash
-mcro <command>
+mcro <command> [options]
 ```
 
 ### Available Commands
 
+#### Cofinguration command
+```bash
+mcro config <option>
+```
+```bash
+mcro config add      # add a new macro
+mcro config delete <key>  # remove an existing macro by its key
+mcro config update <key> <attribute>  # update an existing macro by its key and attribute
+mcro config view <key>  # view details of a specific macro by its key
+```
 #### Interactive/Keyboard Mode
 Launch interactive mode where you can press keys to execute actions:
 ```bash
@@ -75,7 +87,7 @@ For example, if you have a macro with `"command": "github"`:
 mcro github
 ```
 
-## Configuration
+## Structure
 
 ### Macros File Structure
 
@@ -154,7 +166,7 @@ Executes a shell command:
 }
 ```
 
-## Examples
+## Example usage
 
 ### Example 1: Quick App Launcher
 ```bash
@@ -175,6 +187,23 @@ mcro claude    # Launches Claude app
 ```bash
 mcro keys           # See all keyboard shortcuts
 mcro myCommands     # See all terminal commands
+```
+### Example 4: configuration commands
+- Add a new macro:
+```bash
+mcro config add # You will be prompted to enter details
+```
+- Delete a macro:
+```bash
+mcro config delete g # Deletes macro with key 'g'
+```
+- Update a macro:
+```bash
+mcro config update g label "open github in web browser" # Updates the 'label' attribute of macro with key 'g'
+```
+- View a macro:
+```bash
+mcro config view g # Views details of macro with key 'g'
 ```
 
 ## Platform-Specific Notes
