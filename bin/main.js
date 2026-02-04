@@ -23,7 +23,7 @@ const macrosByCommand = Object.fromEntries(rawMacros.map(obj => [obj.command, ob
 function executeMacrosProgram(arg) {
 
     if (!arg) {
-        console.log("Please add a valid argument.");
+        console.log("Please add a valid command.");
         displayHelp();
     }
 
@@ -45,7 +45,7 @@ function executeMacrosProgram(arg) {
     if (arg === "interactive" || arg === "keyboard") {
         runKeyboardMode(macrosByKey);
     } else {
-        if (arg === "keys" || arg === "myCommands" || arg === "config") return;
+        if (arg === "keys" || arg === "myCommands" || arg === "config" || !arg) return;
         runTerminalMode(macrosByCommand, arg);
         
     }
