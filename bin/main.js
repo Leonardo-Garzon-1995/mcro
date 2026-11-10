@@ -1,22 +1,17 @@
 #!/usr/bin/env node
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
+import { MACROS_JSON_PATH } from '../lib/variables.js'
+import setupConfigDirAndFiles from '../lib/config/setup.js';
 import { runKeyboardMode } from '../lib/interactive.js'; 
 import { runTerminalMode } from '../lib/terminal_mode.js';
-import { configOptions } from '../lib/config.js';
+import { configOptions } from '../lib/config/config.js';
 import { displayHelp, colors, loadMacros } from '../lib/helpers.js';
 import * as logger from '../lib/logger.js'
 
 const [, , command, ...args] = process.argv;
+setupConfigDirAndFiles();
 
-const __filename = fileURLToPath(import.meta.url); 
-const __dirname = path.dirname(__filename);
-
-const macrosPath = path.join(__dirname, "..", 'macros.json');
-
-let rawMacros = loadMacros(macrosPath);
+let rawMacros = loadMacros(MACROS_JSON_PATH);
 const macrosByKey = Object.fromEntries(rawMacros.map(obj => [obj.key, obj]))
 const macrosByCommand = Object.fromEntries(rawMacros.map(obj => [obj.command, obj]))
 
@@ -42,46 +37,52 @@ function executeMacrosProgram(cmd, FilePath) {
         return;
     }
 
-    switch(cmd) {
-        case "help":
-        case "-h":
-            displayHelp();
-            break;
-        case "config":
-            configOptions(args[0], FilePath);
-            break;
-        case "keys":
-            if (rawMacros.length === 0) {
-                console.log(`No marcros found`)
-                console.log(`Use: 'mcro config add' to add a new macro`)
-                return 
-            }
-            console.log(`\n${colors.green}Available keys:${colors.reset}`);
-            rawMacros.sort((a, b) => a.key.localeCompare(b.key)).forEach(obj => console.log(`  ${colors.cyan}${obj.key}${colors.reset}: ${obj.label}`));
-            logger.info(`Requested display of commands' keys`)
-            break;
-        case "myCommands":
-            if (rawMacros.length < 1) {
-                console.log(`No marcros found`)
-                console.log(`Use: 'mcro config add' to add a new macro`)
-                return 
-            }
-            console.log(`\n${colors.green}Available commands:${colors.reset}`);
-            rawMacros.sort((a, b) => a.command.localeCompare(b.command)).forEach(obj => console.log(`  ${colors.cyan}${obj.command}${colors.reset}: `.padEnd(22, ' ') + `${obj.label}`));
-            logger.info(`Requested display of commands' list`)
-            break;
-        case "interactive":
-        case "keyboard":
-            runKeyboardMode(macrosByKey);
-            break;
-        default:
-            runTerminalMode(macrosByCommand, cmd);
-            break;
+    try {
+        switch(cmd) {
+            case "help":
+            case "-h":
+                displayHelp();
+                break;
+            case "config":
+                configOptions(args[0], FilePath);
+                break;
+            case "keys":
+                if (rawMacros.length === 0) {
+                    console.log(`No marcros found`)
+                    console.log(`Use: 'mcro config add' to add a new macro`)
+                    return 
+                }
+                console.log(`\n${colors.green}Available keys:${colors.reset}`);
+                rawMacros.sort((a, b) => a.key.localeCompare(b.key)).forEach(obj => console.log(`  ${colors.cyan}${obj.key}${colors.reset}: ${obj.label}`));
+                logger.info(`Requested display of commands' keys`)
+                break;
+            case "myCommands":
+                if (rawMacros.length < 1) {
+                    console.log(`No marcros found`)
+                    console.log(`Use: 'mcro config add' to add a new macro`)
+                    return 
+                }
+                console.log(`\n${colors.green}Available commands:${colors.reset}`);
+                rawMacros.sort((a, b) => a.command.localeCompare(b.command)).forEach(obj => console.log(`  ${colors.cyan}${obj.command}${colors.reset}: `.padEnd(22, ' ') + `${obj.label}`));
+                logger.info(`Requested display of commands' list`)
+                break;
+            case "interactive":
+            case "keyboard":
+                runKeyboardMode(macrosByKey);
+                break;
+            default:
+                runTerminalMode(macrosByCommand, cmd);
+                break;
+        }
+    } catch (error) {
+        console.error(error.message);
+        logger.error(`Error occurred while executing command '${cmd}': ${error}`)
     }
+    
 
     
 }
 
-executeMacrosProgram(command, macrosPath);
+executeMacrosProgram(command, MACROS_JSON_PATH);
 
 
