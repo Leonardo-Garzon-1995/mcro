@@ -78,9 +78,6 @@ function executeMacrosProgram(cmd, FilePath) {
         console.error(error.message);
         logger.error(`Error occurred while executing command '${cmd}': ${error}`)
     }
-    
-
-    
 }
 
 executeMacrosProgram(command, MACROS_JSON_PATH);
