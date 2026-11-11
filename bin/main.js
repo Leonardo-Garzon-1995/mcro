@@ -6,7 +6,7 @@ import { runKeyboardMode } from '../lib/interactive.js';
 import { runTerminalMode } from '../lib/terminal_mode.js';
 import { configOptions } from '../lib/config/config.js';
 import { displayHelp, colors, loadMacros } from '../lib/helpers.js';
-import * as logger from '../lib/logger.js'
+import * as logger from '../lib/log/logger.js'
 
 const [, , command, ...args] = process.argv;
 setupConfigDirAndFiles();
